@@ -6,16 +6,34 @@
                     <li class="back-btn">
                         <div class="mobile-back text-end"><span>Back</span><i class="fa fa-angle-right ps-2" aria-hidden="true"></i></div>
                     </li>
+                    <li class="sidebar-main-title">
+                        <div>
+                          <h6>General             </h6>
+                        </div>
+                      </li>
                     <li class="dropdown">
-                        <a class="nav-link menu-title" href="{{route('index')}}"><i data-feather="home"></i><span>Dashboard</span></a>
+                        <a class="nav-link menu-title  {{ prefixActive('/dashboard') }}" href="{{route('dashboard.home')}}"><i data-feather="home"></i><span>Dashboard</span></a>
+                    </li>
+                    <li class="sidebar-main-title">
+                        <div>
+                          <h6>Asset             </h6>
+                        </div>
+                      </li>
+                    <li class="dropdown">
+                        {{-- <a class="nav-link menu-title  {{ prefixActive('/inventory') }}" href="{{ route('inventory.main.index') }}"><i data-feather="archive"></i><span>Inventory</span></a> --}}
                     </li>
                     <li class="dropdown">
-                        <a class="nav-link menu-title  {{ prefixActive('/inventory') }}" href="{{ route('inventory.main.index') }}"><i data-feather="archive"></i><span>Inventory</span></a>
+                        <a class="nav-link menu-title  {{ prefixActive('/assets') }}" href="{{ route('assets.main.index') }}"><i data-feather="archive"></i><span>Asset Management</span></a>
                     </li>
+                    <li class="sidebar-main-title">
+                        <div>
+                          <h6>Master             </h6>
+                        </div>
+                      </li>
                     <li class="dropdown">
                         <a class="nav-link menu-title {{ prefixActive('/master') }}" href="javascript:void(0)"><i data-feather="book"></i><span>Master</span></a>
                         <ul class="nav-submenu menu-content" style="display: {{ prefixBlock('/master') }};">
-                            <li><a href="{{route('master.product.index')}}" class="{{routeActive('product')}}">Product</a></li>
+                            {{-- <li><a href="{{route('master.product.index')}}" class="{{routeActive('product')}}">Product</a></li> --}}
                             <li><a href="{{route('master.category.index')}}" class="{{routeActive('category')}}">Category</a></li>
                             <li><a href="{{route('master.department.index')}}" class="{{routeActive('department')}}">Department</a></li>
                             <li><a href="{{route('master.company.index')}}" class="{{routeActive('company')}}">Company</a></li>

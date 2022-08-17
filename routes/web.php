@@ -52,6 +52,27 @@ Route::group(['prefix' => 'inventory', 'as' => 'inventory.','middleware' => ['au
 
 });
 
+Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.','middleware' => ['auth']], function () {
+    Route::get('home', ['uses' => 'DashboardController@index', 'as' => 'home'] );
+    Route::get('qrcode', ['uses' => 'DashboardController@scan', 'as' => 'scan'] );
+
+});
+
+
+Route::group(['prefix' => 'assets', 'as' => 'assets.','middleware' => ['auth']], function () {
+    // Route::get('/home', ['uses' => 'Inventory\InventoryController@index', 'as' => 'inventory.home'] )->name('inventory.home');
+    Route::resource('main', 'Assets\AssetController');
+    Route::get('main_datatables', ['uses' => 'Assets\AssetController@datatables', 'as' => 'main.datatables'] );
+    Route::get('detail/{id}', ['uses' => 'Assets\AssetController@detail', 'as' => 'main.detail'] );
+    Route::get('print/{id}', ['uses' => 'Assets\AssetController@print', 'as' => 'main.print'] );
+    Route::get('check_in/{id}', ['uses' => 'Assets\AssetController@checkIn', 'as' => 'main.checkin'] );
+    Route::post('check_in_process', ['uses' => 'Assets\AssetController@checkInProcess', 'as' => 'main.checkin.process'] );
+    Route::get('check_out/{id}', ['uses' => 'Assets\AssetController@checkOut', 'as' => 'main.checkout'] );
+    Route::post('check_out_process', ['uses' => 'Assets\AssetController@checkOutProcess', 'as' => 'main.checkout.process'] );
+    Route::get('history/{id}', ['uses' => 'Assets\AssetController@history', 'as' => 'history'] );
+
+});
+
 Route::group(['middleware' => ['guest']], function() {
     /**
      * Register Routes

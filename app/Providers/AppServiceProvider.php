@@ -24,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $project_title = '| E - Inventory';
+        $project_title = '| Asset Kita';
         View::share('title', $project_title);
     }
 }

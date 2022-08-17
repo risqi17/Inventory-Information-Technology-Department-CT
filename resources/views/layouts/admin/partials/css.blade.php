@@ -21,3 +21,5 @@
 <link rel="stylesheet" type="text/css" href="{{asset('assets/css/responsive.css')}}">
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/select2.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/date-picker.css') }}">
+<!-- Plugins css start-->
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/simple-mde.css') }}">

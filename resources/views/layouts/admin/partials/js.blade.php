@@ -22,3 +22,9 @@
 <script src="{{ asset('assets/js/datepicker/date-picker/datepicker.js') }}"></script>
 <script src="{{ asset('assets/js/datepicker/date-picker/datepicker.en.js') }}"></script>
 <script src="{{ asset('assets/js/datepicker/date-picker/datepicker.custom.js') }}"></script>
+
+<!-- Plugins JS start-->
+<script src="{{ asset('assets/js/editor/simple-mde/simplemde.min.js') }}"></script>
+<script src="{{ asset('assets/js/editor/simple-mde/simplemde.custom.js') }}"></script>
+
+

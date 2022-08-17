@@ -23,13 +23,13 @@ if(! function_exists('routeActive')){
 
 function getStatusInventory($status) {
 	if ($status == 1) {
-			return "<span class='badge badge-primary'>Masuk</span>";
+			return "<span class='badge badge-primary'>Ready to deploy</span>";
 	} else if ($status == 2) {
-		return "<span class='badge badge-warning text-dark'>Keluar</span>";
+		return "<span class='badge badge-warning text-dark'>Pending</span>";
 	} else if ($status == 3) {
-		return "<span class='badge badge-info'>Dikembalikan</span>";
+		return "<span class='badge badge-info'>Broken</span>";
 	} else if ($status == 4) {
-		return "<span class='badge badge-danger'>Dihapus</span>";
+		return "<span class='badge badge-danger'>In Used</span>";
 	} else {
 		return "-";
 	}
