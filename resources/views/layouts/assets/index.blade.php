@@ -25,6 +25,7 @@
             <h5>Daftar Assets</h5><span>Berikut daftar barang pada department IT.</span>
             <br>
             <a href="{{ route('assets.main.create') }}" class="btn btn-success btn-sm" type="button"><i class="icon-plus"></i> Tambah</a>
+            <a href="{{ route('assets.main.export') }}" class="btn btn-info btn-sm" type="button"><i class="icofont icofont-file-excel"></i> Export</a>
           </div>
           <div class="card-body">
             <div class="dt-ext table-responsive">

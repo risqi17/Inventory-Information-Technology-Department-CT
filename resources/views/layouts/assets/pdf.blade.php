@@ -10,29 +10,11 @@
 			body{
 				font-size: 9pt;
 			}
-
-			table.table-bordered {
-				font-size: 9pt;
-				border-left: 0.01em solid #333;
-				border-right: 0;
-				border-top: 0.01em solid #333;
-				border-bottom: 0;
+			table, th, td {
+				border: 1px solid black;
 				border-collapse: collapse;
 			}
-			table.table-bordered td,
-			table.table-bordered th {
-				border-left: 0;
-				border-right: 0.01em solid #333;
-				border-top: 0;
-				border-bottom: 0.01em solid #333;
-				padding:5px 8px;
-			}
 
-			.table-bordered thead th,
-			.table-bordered thead td {
-				border-bottom-width: 1px;
-				padding:5px;
-			}
 			.text-center{
 				text-align:center;
 			}
@@ -65,17 +47,24 @@
 
 	</head>
 	<body>
-        <div class="print_label change-page rotate-0" style="top: 0mm !important;">
-			<div style="float:left;margin-right:10px">
-                {!! QrCode::size(150)->generate($asset->uuid); !!}
-				
-			</div>
-			<div>
-                <img src="{{ asset('assets/images/logo/logo.png') }}" width="30%" alt="">
-				<h6>{{ $asset->asset_number }}</h6>
-				<span class="desc">{{ $asset->product_name }}</span>
-			</div>
-		</div>
+		<table>
+			<tr height="130px">
+				<td width="130px">
+					<div style="margin-left:10px">
+						{!! QrCode::size(110)->generate($asset->uuid); !!}
+					</div>
+					
+				</td>
+				<td width="150px" style="text-align: left; vertical-align:top;">
+					<p style="margin-top:10px; margin-left: 10px">{{ $asset->product_name }} <br>
+					{{ $asset->asset_number }} <br> <br><br><br>
+					<img src="{{ asset('assets/images/logo/logo.png') }}" alt="" srcset="" width="50%">
+					</p>
+
+				</td>
+			</tr>
+		</table>
+        
 	</body>
 
 </html>

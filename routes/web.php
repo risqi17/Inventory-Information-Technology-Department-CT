@@ -20,7 +20,7 @@ Route::get('/', function () {
 })->name('/');
 
 Route::prefix('starter-kit')->group(function () {
-    Route::view('index', 'admin.color-version.index')->name('index');
+        Route::get('index', ['uses' => 'DashboardController@index', 'as' => 'index'] );
 });
 
 Route::group(['prefix' => 'master', 'as' => 'master.','middleware' => ['auth']], function () {
@@ -70,6 +70,8 @@ Route::group(['prefix' => 'assets', 'as' => 'assets.','middleware' => ['auth']],
     Route::get('check_out/{id}', ['uses' => 'Assets\AssetController@checkOut', 'as' => 'main.checkout'] );
     Route::post('check_out_process', ['uses' => 'Assets\AssetController@checkOutProcess', 'as' => 'main.checkout.process'] );
     Route::get('history/{id}', ['uses' => 'Assets\AssetController@history', 'as' => 'history'] );
+    Route::get('ubah/{id}', ['uses' => 'Assets\AssetController@ubah', 'as' => 'main.ubah'] );
+    Route::get('export', ['uses' => 'Assets\AssetController@export', 'as' => 'main.export'] );
 
 });
 
@@ -103,7 +105,7 @@ Route::group(['middleware' => ['auth']], function() {
     })->name('/home');
     
     Route::prefix('starter-kit')->group(function () {
-        Route::view('index', 'admin.color-version.index')->name('index');
+        Route::get('index', ['uses' => 'DashboardController@index', 'as' => 'index'] );
     });
 
 });

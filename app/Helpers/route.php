@@ -34,3 +34,82 @@ function getStatusInventory($status) {
 		return "-";
 	}
 }
+
+if ( ! function_exists('dateTextMySQL2ID'))
+{
+    function dateTextMySQL2ID($date){
+        $th=substr($date,0,4);
+        $bulan=substr($date,5,2);
+        $tgl=substr($date,8,2);
+
+        $tglDepan=substr($tgl,0,1);
+        $tgldiambil=substr($tgl,1,1);
+
+        if($tglDepan=="0"){
+           $tglID=$tgldiambil;
+        }else{
+           $tglID=$tgl;
+        }
+
+        if($bulan=="01")
+        {
+         $dateID ="$tglID Januari $th";
+         return $dateID;
+        }
+        elseif($bulan=="02")
+        {
+         $dateID ="$tglID Februari $th";
+         return $dateID;
+        }
+        elseif($bulan=="03")
+        {
+         $dateID ="$tglID Maret $th";
+         return $dateID;
+        }
+        elseif($bulan=="04")
+        {
+         $dateID ="$tglID April $th";
+         return $dateID;
+        }
+        elseif($bulan=="05")
+        {
+         $dateID ="$tglID Mei $th";
+         return $dateID;
+        }
+        elseif($bulan=="06")
+        {
+         $dateID ="$tglID Juni $th";
+         return $dateID;
+        }
+        elseif($bulan=="07")
+        {
+         $dateID ="$tglID Juli $th";
+         return $dateID;
+        }
+        elseif($bulan=="08")
+        {
+         $dateID ="$tglID Agustus $th";
+         return $dateID;
+        }
+        if($bulan=="09")
+        {
+         $dateID ="$tglID September $th";
+         return $dateID;
+        }
+        elseif($bulan=="10")
+        {
+         $dateID ="$tglID Oktober $th";
+         return $dateID;
+        }
+        elseif($bulan=="11")
+        {
+         $dateID ="$tglID November $th";
+         return $dateID;
+        }
+        elseif($bulan=="12")
+        {
+         $dateID ="$tglID Desember $th";
+         return $dateID;
+        }
+    }
+}//end function

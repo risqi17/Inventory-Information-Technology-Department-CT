@@ -16,6 +16,8 @@ use Ramsey\Uuid\Nonstandard\Uuid as NonstandardUuid;
 use Ramsey\Uuid\Uuid;
 use PDF;
 use Vinkla\Hashids\Facades\Hashids;
+use App\Exports\AssetExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 class AssetController extends Controller
@@ -47,7 +49,7 @@ class AssetController extends Controller
 
             $url_detail = "<a class='dropdown-item' href='".route('assets.main.detail',  $result->id)."'>Detail</a>";
             $url_print = "<a class='dropdown-item'  href='#' title='Print Data' onclick='".$url."'>Print QR Code</a>";
-            $url_edit = "<a class='dropdown-item' href='".route('inventory.main.edit',  $result->id)."'>Edit</a>";
+            $url_edit = "<a class='dropdown-item' href='".route('assets.main.ubah',  $result->id)."'>Edit</a>";
             $url_delete = "<form class='delete' action='".route('inventory.main.destroy', $result->id)."' method='DELETE'>
                                 <button class='btn btn-danger dropdown-item' type='submit' alt='Hapus'><i class='icon-trash'></i> Hapus</button>
                             </form>";
@@ -57,8 +59,7 @@ class AssetController extends Controller
                     .$url_check 
                     .$url_print 
                     .$url_detail 
-                    .$url_edit 
-                    .$url_delete.
+                    .$url_edit.
                     "</div></div></div>";
         }) 
         // ->addColumn('status', function ($result){
@@ -135,7 +136,7 @@ class AssetController extends Controller
         ->first();
 
         $transaction        = DB::table('asset_transaction')
-        ->select('asset_transaction.*', 'users.name AS employee', 'departments.name AS department')
+        ->select('asset_transaction.*', 'users.name AS employee', 'departments.name AS department', DB::raw("date(transaction_date) as tanggal"))
         ->leftJoin('assets_management', 'assets_management.id','=','asset_transaction.asset_id')
         ->leftJoin('users', 'users.id','=','asset_transaction.created_by')
         ->leftJoin('departments', 'departments.id','=','asset_transaction.department_id')
@@ -157,7 +158,8 @@ class AssetController extends Controller
         $inventory = Inventories::findOrFail($id);
         $product        = DB::table('products')->get()->pluck('name', 'id');
         $department     = DB::table('departments')->get()->pluck('name', 'id');
-        return view('layouts.inventory.edit', compact('product','department'));
+
+        return view('layouts.assets.edit', compact('product','department'));
     }
 
     /**
@@ -169,19 +171,20 @@ class AssetController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'name' => 'required'
-        ]);
-
         
-        $data['name'] = strtoupper($request->get('name'));
-        $data['desc'] = strtoupper($request->get('desc'));
-        $data['id_category'] = $request->get('id_category');
-        $data['updated_by'] = Auth::user()->id;
-        $inventory = Inventories::findOrFail($id);
-        $inventory->update($data);
+        $data['product_name'] = strtoupper($request->get('product'));
+        $data['asset_number'] = $request->get('number');
+        $data['service_tag'] = $request->get('service');
+        $data['specification'] = $request->get('specification');
+        $data['category_id'] = $request->get('category');
+        $data['warranty'] = $request->get('warranty');
+        $data['quantity'] = $request->get('quantity');
+        $data['purchase_date'] = $request->get('purchase_date');
+        $data['status'] = $request->get('status');
+        $asset = AssetManagement::findOrFail($id);
+        $asset->update($data);
 
-        return redirect()->route('inventory.main.index')
+        return redirect()->route('assets.main.index')
                 ->with('success','Item updated successfully');
     }
 
@@ -210,14 +213,14 @@ class AssetController extends Controller
     public function history($id)
     {
         $asset = DB::table('assets_management')
-        ->select('assets_management.*', 'users.name AS employee', 'categories.name AS category')
+        ->select('assets_management.*', 'users.name AS employee', 'categories.name AS category', DB::raw("date(purchase_date) as tanggal"))
         ->leftJoin('users', 'users.id','=','assets_management.created_by')
         ->leftJoin('categories', 'categories.id','=','assets_management.category_id')
         ->where('assets_management.uuid',$id)
         ->first();
 
         $transaction        = DB::table('asset_transaction')
-        ->select('asset_transaction.*', 'users.name AS employee', 'departments.name AS department')
+        ->select('asset_transaction.*', 'users.name AS employee', 'departments.name AS department', DB::raw("date(transaction_date) as tanggal"))
         ->leftJoin('assets_management', 'assets_management.id','=','asset_transaction.asset_id')
         ->leftJoin('users', 'users.id','=','asset_transaction.created_by')
         ->leftJoin('departments', 'departments.id','=','asset_transaction.department_id')
@@ -225,8 +228,22 @@ class AssetController extends Controller
         ->orderBy('asset_transaction.transaction_date','desc')
         ->get();
 
-        return view('layouts.assets.show', compact('asset','transaction'));
+        return view('layouts.assets.detail', compact('asset','transaction'));
 
+    }
+
+    public function ubah($id)
+    {
+        $asset = DB::table('assets_management')
+        ->select('assets_management.*', 'users.name AS employee', 'categories.name AS category')
+        ->leftJoin('users', 'users.id','=','assets_management.created_by')
+        ->leftJoin('categories', 'categories.id','=','assets_management.category_id')
+        ->where('assets_management.id',$id)
+        ->first();
+
+        $category     = DB::table('categories')->get();
+
+        return view('layouts.assets.edit', compact('asset','category'));
     }
 
     public function checkOut($id)
@@ -297,4 +314,10 @@ class AssetController extends Controller
                             ->with('success','Inventory created successfully');
 
     }
+
+    public function export()
+	{
+		$date = date('Y-m-d');
+        return Excel::download(new AssetExport(), 'AssetManagement-'.$date.'.xlsx');
+	}
 }
