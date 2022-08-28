@@ -50,16 +50,15 @@ class AssetController extends Controller
             $url_detail = "<a class='dropdown-item' href='".route('assets.main.detail',  $result->id)."'>Detail</a>";
             $url_print = "<a class='dropdown-item'  href='#' title='Print Data' onclick='".$url."'>Print QR Code</a>";
             $url_edit = "<a class='dropdown-item' href='".route('assets.main.ubah',  $result->id)."'>Edit</a>";
-            $url_delete = "<form class='delete' action='".route('inventory.main.destroy', $result->id)."' method='DELETE'>
-                                <button class='btn btn-danger dropdown-item' type='submit' alt='Hapus'><i class='icon-trash'></i> Hapus</button>
-                            </form>";
+            $url_delete = "<a class='btn btn-danger dropdown-item' href='".route('assets.main.delete', $result->id)."'>Hapus</a>";
             return "<div class='btn-group' role='group'>"
                     ."<button class='btn btn-success dropdown-toggle' id='btnGroupDrop1' type='button' data-bs-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>Action</button>"
                     ."<div class='dropdown-menu' aria-labelledby='btnGroupDrop1'>"
                     .$url_check 
                     .$url_print 
                     .$url_detail 
-                    .$url_edit.
+                    .$url_edit
+                    .$url_delete.
                     "</div></div></div>";
         }) 
         // ->addColumn('status', function ($result){
@@ -90,7 +89,14 @@ class AssetController extends Controller
     public function create()
     { 
         $category     = DB::table('categories')->get()->pluck('name', 'id');
-        return view('layouts.assets.create', compact('category'));
+        
+        $tempCondition = array('Casing','Adaptor','Tas','LCD','Keyboard','Harddisk','Mouse','Lainnya');
+        $condition = [];
+        foreach($tempCondition as $val){ 
+            $condition[$val] = $val;
+        } 
+
+        return view('layouts.assets.create', compact('category','condition'));
     }
 
     /**
@@ -109,11 +115,25 @@ class AssetController extends Controller
         $data['category_id'] = $request->get('category');
         $data['warranty'] = $request->get('warranty');
         $data['quantity'] = $request->get('quantity');
+        if($request->get('condition')){
+            $condition = $request->get('condition');
+            $condition = implode(',', $condition);
+
+            $data['condition'] = $condition;
+        }
         $data['purchase_date'] = $request->get('purchase_date');
         $data['status'] = $request->get('status');
         $data['status_checkin'] = 1;
         $data['created_by'] = Auth::user()->id;
         $data['uuid'] = Uuid::uuid4();
+
+        if($request->file('file')){
+            $file= $request->file('file');
+            $filename= date('YmdHi').$request->get('number').'.'.$file->getClientOriginalExtension();
+            $file-> move(public_path('assets/images/assets'), $filename);
+            $data['image']= $filename;
+        }
+
         AssetManagement::create($data);
 
         return redirect()->route('assets.main.index')
@@ -141,10 +161,31 @@ class AssetController extends Controller
         ->leftJoin('users', 'users.id','=','asset_transaction.created_by')
         ->leftJoin('departments', 'departments.id','=','asset_transaction.department_id')
         ->where('asset_transaction.asset_id', $id)
-        ->orderBy('asset_transaction.transaction_date','desc')
+        ->orderBy('asset_transaction.created_at','desc')
         ->get();
 
         return view('layouts.assets.show', compact('asset','transaction'));
+    }
+
+    public function printBa($id)
+    {
+        $transaction        = DB::table('asset_transaction')
+        ->select('asset_transaction.*', 'assets_management.product_name','assets_management.asset_number','assets_management.specification','assets_management.uuid','assets_management.service_tag','assets_management.condition','users.name AS employee', 'departments.name AS department', DB::raw("date(transaction_date) as tanggal"), DB::raw("date(end_date) as tanggal_kembali"))
+        ->leftJoin('assets_management', 'assets_management.id','=','asset_transaction.asset_id')
+        ->leftJoin('users', 'users.id','=','asset_transaction.created_by')
+        ->leftJoin('departments', 'departments.id','=','asset_transaction.department_id')
+        ->where('asset_transaction.id', $id)
+        ->orderBy('asset_transaction.transaction_date','desc')
+        ->first();
+
+        $existedCondition = $transaction->condition;
+        $tempCondition = explode(',', $existedCondition);
+        $oldCondition = [];
+        foreach($tempCondition as $item){
+            $oldCondition[$item] = $item;
+        }
+
+        return view('layouts.assets.print', compact('transaction','oldCondition'));
     }
 
     /**
@@ -159,7 +200,16 @@ class AssetController extends Controller
         $product        = DB::table('products')->get()->pluck('name', 'id');
         $department     = DB::table('departments')->get()->pluck('name', 'id');
 
-        return view('layouts.assets.edit', compact('product','department'));
+        $existedCondition = $inventory->condition;
+        dd($existedCondition);
+
+       $tempCondition = array('Casing','Adaptor','Tas','LCD','Keyboard','Harddisk','Mouse','Lainnya');
+       $condition = [];
+       foreach($tempCondition as $val){ 
+           $condition[$val] = $val;
+       } 
+
+        return view('layouts.assets.edit', compact('product','department','condition'));
     }
 
     /**
@@ -181,6 +231,23 @@ class AssetController extends Controller
         $data['quantity'] = $request->get('quantity');
         $data['purchase_date'] = $request->get('purchase_date');
         $data['status'] = $request->get('status');
+
+        if($request->get('condition')){
+            $condition = $request->get('condition');
+            $condition = implode(',', $condition);
+
+            $data['condition'] = $condition;
+        } else {
+            $data['condition'] = '';
+        }
+
+        if($request->file('file')){
+            $file= $request->file('file');
+            $filename= date('YmdHi').$request->get('number').'.'.$file->getClientOriginalExtension();
+            $file-> move(public_path('assets/images/assets'), $filename);
+            $data['image']= $filename;
+        }
+
         $asset = AssetManagement::findOrFail($id);
         $asset->update($data);
 
@@ -203,10 +270,30 @@ class AssetController extends Controller
                 ->with('success','Item deleted successfully');
     }
 
+    public function delete($id)
+    {
+        $assets = AssetManagement::findOrFail($id);
+        $assets->delete();
+
+        return redirect()->route('assets.main.index')
+                ->with('success','Item updated successfully');
+    }
+
     public function print($id)
     {
         $asset = AssetManagement::findOrFail($id);
         return view('layouts.assets.pdf', compact('asset'));
+
+    }
+
+    public function printMultiple(Request $request)
+    {
+        // dd($request->input('asset_id'));
+        $id = explode(',',$request->input('asset_id'));
+
+        $asset = AssetManagement::whereIn('id', $id)->get();
+
+        return view('layouts.assets.pdf_multiple', compact('asset'));
 
     }
 
@@ -243,7 +330,20 @@ class AssetController extends Controller
 
         $category     = DB::table('categories')->get();
 
-        return view('layouts.assets.edit', compact('asset','category'));
+        $existedCondition = $asset->condition;
+        $tempCondition = explode(',', $existedCondition);
+        $oldCondition = [];
+        foreach($tempCondition as $item){
+            $oldCondition[$item] = $item;
+        }
+
+        $tempCondition = array('Casing','Adaptor','Tas','LCD','Keyboard','Harddisk','Mouse','Lainnya');
+        $condition = [];
+        foreach($tempCondition as $val){ 
+            $condition[$val] = $val;
+        } 
+
+        return view('layouts.assets.edit', compact('asset','category','condition','oldCondition'));
     }
 
     public function checkOut($id)
@@ -262,6 +362,10 @@ class AssetController extends Controller
         $data['asset_id'] = $request->get('id');
         $data['department_id'] = $request->get('department');
         $data['transaction_date'] = $request->get('checkout_date');
+        $data['needed'] = $request->get('needed');
+        $data['end_date'] = $request->get('end_date');
+        $data['email'] = $request->get('email');
+        $data['phone'] = $request->get('phone');
         $data['type'] = "CHECKOUT";
         $data['created_by'] = Auth::user()->id;
 

@@ -21,6 +21,94 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
+-- Name: asset_transaction; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.asset_transaction (
+    id bigint NOT NULL,
+    asset_id integer NOT NULL,
+    transaction_date timestamp(0) without time zone NOT NULL,
+    "user" character varying(255) NOT NULL,
+    department_id integer NOT NULL,
+    type character varying(255) NOT NULL,
+    created_by integer NOT NULL,
+    updated_by integer,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.asset_transaction OWNER TO postgres;
+
+--
+-- Name: asset_transaction_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.asset_transaction_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.asset_transaction_id_seq OWNER TO postgres;
+
+--
+-- Name: asset_transaction_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.asset_transaction_id_seq OWNED BY public.asset_transaction.id;
+
+
+--
+-- Name: assets_management; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.assets_management (
+    id bigint NOT NULL,
+    asset_number character varying(255) NOT NULL,
+    service_tag character varying(255) NOT NULL,
+    product_name character varying(255) NOT NULL,
+    specification character varying(255) NOT NULL,
+    category_id integer NOT NULL,
+    uuid character varying(255) NOT NULL,
+    quantity integer NOT NULL,
+    status integer NOT NULL,
+    status_checkin integer NOT NULL,
+    purchase_date timestamp(0) without time zone NOT NULL,
+    warranty integer NOT NULL,
+    created_by integer NOT NULL,
+    updated_by integer,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.assets_management OWNER TO postgres;
+
+--
+-- Name: assets_management_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.assets_management_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.assets_management_id_seq OWNER TO postgres;
+
+--
+-- Name: assets_management_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.assets_management_id_seq OWNED BY public.assets_management.id;
+
+
+--
 -- Name: categories; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -423,6 +511,20 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
+-- Name: asset_transaction id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.asset_transaction ALTER COLUMN id SET DEFAULT nextval('public.asset_transaction_id_seq'::regclass);
+
+
+--
+-- Name: assets_management id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.assets_management ALTER COLUMN id SET DEFAULT nextval('public.assets_management_id_seq'::regclass);
+
+
+--
 -- Name: categories id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -490,6 +592,27 @@ ALTER TABLE ONLY public.products ALTER COLUMN id SET DEFAULT nextval('public.pro
 --
 
 ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+--
+-- Data for Name: asset_transaction; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.asset_transaction (id, asset_id, transaction_date, "user", department_id, type, created_by, updated_by, created_at, updated_at) FROM stdin;
+1	2	2022-08-17 00:00:00	RISQI	2	CHECKOUT	6	\N	2022-08-17 15:01:50	2022-08-17 15:01:50
+2	2	2022-08-18 00:00:00	RISQI	2	CHECKIN	6	\N	2022-08-17 16:24:23	2022-08-17 16:24:23
+\.
+
+
+--
+-- Data for Name: assets_management; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.assets_management (id, asset_number, service_tag, product_name, specification, category_id, uuid, quantity, status, status_checkin, purchase_date, warranty, created_by, updated_by, created_at, updated_at) FROM stdin;
+1	LPT/30/12	SN120		HALO KITA ASSET	8	854a2166-c6b0-4a71-a990-63f74d381b64	1	1	1	2022-08-16 00:00:00	12	6	\N	2022-08-17 03:19:33	2022-08-17 03:19:33
+2	PRNT/2/323	SF839434	PRINTER EPSON	**HALOOO**	9	a91d22a4-77d1-4c33-8eed-25838cc93c87	1	1	1	2022-08-17 00:00:00	24	6	\N	2022-08-17 04:18:50	2022-08-17 16:24:23
+4	IT0001	IT0001	CPU SET	Asus	9	2d842706-1680-4304-acdb-30a049a28465	2	1	1	2022-08-21 00:00:00	32	6	\N	2022-08-18 07:51:36	2022-08-21 06:19:50
+\.
 
 
 --
@@ -564,6 +687,8 @@ COPY public.migrations (id, migration, batch) FROM stdin;
 16	2022_03_04_093509_create_department_table	2
 17	2022_03_04_093526_create_companies_table	2
 18	2022_03_04_093446_create_inventory_table	3
+27	2022_08_16_155701_create_assets_management_table	4
+28	2022_08_17_044413_create_asset_transaction_table	5
 \.
 
 
@@ -602,6 +727,20 @@ COPY public.users (id, name, email, username, email_verified_at, password, remem
 6	RISQI AHMAD	risqi@gmail.com	risqi	\N	$2y$10$a/YcDCpTI18JzErWRDQTQOq8B8H8NV/P6eMeubzTtSN5yaqi4VeWa	\N	2022-03-09 07:04:33	2022-03-09 07:04:33	4
 7	HANIF	hanif@gmail.com	hanif	\N	$2y$10$ELwwi5OkN.DzmpUcMZITuOUyNb.PEiWBSpgtGiUCOAc3w80ujBSiq	\N	2022-05-19 08:10:50	2022-05-19 08:10:50	6
 \.
+
+
+--
+-- Name: asset_transaction_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.asset_transaction_id_seq', 2, true);
+
+
+--
+-- Name: assets_management_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.assets_management_id_seq', 4, true);
 
 
 --
@@ -650,7 +789,7 @@ SELECT pg_catalog.setval('public.inventories_id_seq', 8, true);
 -- Name: migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.migrations_id_seq', 18, true);
+SELECT pg_catalog.setval('public.migrations_id_seq', 28, true);
 
 
 --
@@ -672,6 +811,22 @@ SELECT pg_catalog.setval('public.products_id_seq', 4, true);
 --
 
 SELECT pg_catalog.setval('public.users_id_seq', 7, true);
+
+
+--
+-- Name: asset_transaction asset_transaction_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.asset_transaction
+    ADD CONSTRAINT asset_transaction_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: assets_management assets_management_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.assets_management
+    ADD CONSTRAINT assets_management_pkey PRIMARY KEY (id);
 
 
 --

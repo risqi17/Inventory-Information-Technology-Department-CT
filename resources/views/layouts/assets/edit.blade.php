@@ -70,7 +70,29 @@
                                     <textarea id="editable" name="specification" placeholder="Spesifikasi tulis disini">{{ $asset->specification }}</textarea>
                                 </div>
                             </div>
-                            <div class="row">
+							<div class="row mt-3">
+                                <div class="col-sm-6">
+									<label class="form-label" for="exampleFormControlInput1">Photo (Tidak perlu upload, jika foto tidak ingin diubah)</label>
+									<input class="form-control" type="file" name="file" accept="image/*"/>
+                                </div>
+                            </div>
+							<div class="row mt-3">
+								<div class="col-sm-6">
+									<label class="col-form-label">Parameter Kondisi</label>
+									<select class="js-example-placeholder-multiple col-sm-12" name="condition[]"  multiple="multiple">
+										@foreach ($condition as $item)
+											<option value="{{ $item }}"
+											@foreach ($oldCondition as $old)
+												@if ($old == $item)
+													selected
+												@endif
+											@endforeach
+											>{{ $item }}</option>	
+										@endforeach
+									</select>
+								</div>
+							</div>
+                            <div class="row mt-3">
 								<div class="col-sm-5">
 									<div class="mb-3">
 										<label class="form-label" for="exampleFormControlInput1">Kategori</label>
@@ -110,6 +132,7 @@
                                             <option value="1" @if ($asset->status == 1) Selected @endif>Ready to deploy</option>
                                             <option value="2" @if ($asset->status == 2) Selected @endif>Pending</option>
                                             <option value="3" @if ($asset->status == 3) Selected @endif>Broken</option>
+                                            <option value="4" @if ($asset->status == 4) Selected @endif>In Used</option>
                                         </select>
 									</div>
 								</div>

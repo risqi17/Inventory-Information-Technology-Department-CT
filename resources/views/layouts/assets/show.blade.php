@@ -50,7 +50,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-sm-9">
+                                    <div class="col-sm-6">
                                         <div class="table-responsive">
                                             <table class="display">
                                                
@@ -101,14 +101,21 @@
                                                                         -
                                                                     @endif
                                                             </td>
-                                                        </tr>  
+                                                        </tr> 
+                                                        <tr>
+                                                            <td></td>
+                                                        </tr>
+                                                        <tr class="mt-3">   
+                                                            <td>{!! QrCode::size(150)->generate($asset->uuid); !!}</td>
+                                                        </tr> 
                                                 </tbody>
                                             </table>
                                         </div>
 
                                     </div>
                                     <div class="col-sm-3">
-                                        {!! QrCode::size(150)->generate($asset->uuid); !!}
+                                        <img src="{{ asset('assets/images/assets') }}/{{ $asset->image }}" alt="" width="500px"> &nbsp;
+                                        
                                     </div>
                                 </div>
                                 
@@ -131,6 +138,7 @@
                                                     <th>Departemen</th>
                                                     <th>Type</th>
                                                     <th>Created By</th>
+                                                    <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -147,6 +155,12 @@
                                                             @endif
                                                         </td>
                                                         <td>{{ $item->employee }}</td>
+                                                        <td>
+                                                            @if ($item->type == "CHECKOUT")
+                                                                <a class="btn btn-sm btn-info"  href="#" title="Print Data" onclick="printExternal('/assets/print/ba/{{ $item->id }}')">Cetak BA</a>
+                                                            @endif
+                                                            
+                                                        </td>
                                                     </tr>    
                                                 @endforeach
                                             </tbody>

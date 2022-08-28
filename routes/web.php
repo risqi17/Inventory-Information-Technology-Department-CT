@@ -65,12 +65,15 @@ Route::group(['prefix' => 'assets', 'as' => 'assets.','middleware' => ['auth']],
     Route::get('main_datatables', ['uses' => 'Assets\AssetController@datatables', 'as' => 'main.datatables'] );
     Route::get('detail/{id}', ['uses' => 'Assets\AssetController@detail', 'as' => 'main.detail'] );
     Route::get('print/{id}', ['uses' => 'Assets\AssetController@print', 'as' => 'main.print'] );
+    Route::get('multiple', ['uses' => 'Assets\AssetController@printMultiple', 'as' => 'main.multiple'] );
+    Route::get('print/ba/{id}', ['uses' => 'Assets\AssetController@printBa', 'as' => 'main.print.ba'] );
     Route::get('check_in/{id}', ['uses' => 'Assets\AssetController@checkIn', 'as' => 'main.checkin'] );
     Route::post('check_in_process', ['uses' => 'Assets\AssetController@checkInProcess', 'as' => 'main.checkin.process'] );
     Route::get('check_out/{id}', ['uses' => 'Assets\AssetController@checkOut', 'as' => 'main.checkout'] );
     Route::post('check_out_process', ['uses' => 'Assets\AssetController@checkOutProcess', 'as' => 'main.checkout.process'] );
     Route::get('history/{id}', ['uses' => 'Assets\AssetController@history', 'as' => 'history'] );
     Route::get('ubah/{id}', ['uses' => 'Assets\AssetController@ubah', 'as' => 'main.ubah'] );
+    Route::get('delete/{id}', ['uses' => 'Assets\AssetController@delete', 'as' => 'main.delete'] );
     Route::get('export', ['uses' => 'Assets\AssetController@export', 'as' => 'main.export'] );
 
 });

@@ -96,6 +96,11 @@
 									<h6>Purchase Date : {{ dateTextMySQL2ID($asset->purchase_date) }}</h6>
 								</td>
 							</tr>
+							<tr>
+								<td>
+									<img src="{{ asset('assets/images/assets') }}/{{ $asset->image }}" alt="" width="300px">
+								</td>
+							</tr>
                         </tbody>
                       </table>
                     </div>

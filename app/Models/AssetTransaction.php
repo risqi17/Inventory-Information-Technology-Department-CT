@@ -24,7 +24,7 @@ class AssetTransaction extends Model
      *
      * @var array
      */
-    protected $fillable = ['asset_id','transaction_date','user','department_id','type','updated_by', 'created_by','created_at','updated_at'];
+    protected $fillable = ['asset_id','transaction_date','user','department_id','type','needed','email','phone','end_date','updated_by', 'created_by','created_at','updated_at'];
 
     
 }

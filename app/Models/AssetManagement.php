@@ -24,7 +24,22 @@ class AssetManagement extends Model
      *
      * @var array
      */
-    protected $fillable = ['asset_number','service_tag','product_name','specification','warranty','category_id','purchase_date','uuid','quantity','status_checkin','status','updated_by', 'created_by','created_at','updated_at'];
+    protected $fillable = ['asset_number','service_tag','product_name','specification','warranty','category_id','purchase_date','uuid','quantity','status_checkin','status','image','condition','updated_by', 'created_by','created_at','updated_at'];
+
+
+    public function setCoditionAttribute($value)
+    {
+        $this->attributes['condition'] = json_encode($value);
+    }
+  
+    /**
+     * Get the categories
+     *
+     */
+    public function getConditionAttribute($value)
+    {
+        return $this->attributes['condition'] = json_decode($value);
+    }
 
     
 }

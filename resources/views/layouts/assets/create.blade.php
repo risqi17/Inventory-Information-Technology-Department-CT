@@ -5,7 +5,7 @@
 @endsection
 
 @push('css')
-
+	<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/dropzone.css') }}">
 @endpush
 
 @section('content')
@@ -23,7 +23,7 @@
 					<div class="card-header pb-0">
 						<h5>Add Asset</h5>
 					</div>
-					<form class="form theme-form" action="{{ route('assets.main.store') }}" method="POST">
+					<form class="form theme-form" action="{{ route('assets.main.store') }}" method="POST" enctype="multipart/form-data">
 						@csrf
 						<div class="card-body">
 							<div class="row">
@@ -64,7 +64,23 @@
                                     <textarea id="editable" name="specification" placeholder="Spesifikasi tulis disini"></textarea>
                                 </div>
                             </div>
-                            <div class="row">
+							<div class="row mt-3">
+                                <div class="col-sm-6">
+									<label class="form-label" for="exampleFormControlInput1">Photo</label>
+									<input class="form-control" type="file" name="file" accept="image/*" required/>
+                                </div>
+                            </div>
+							<div class="row mt-3">
+								<div class="col-sm-6">
+									<label class="col-form-label">Parameter Kondisi</label>
+									<select class="js-example-placeholder-multiple col-sm-12" name="condition[]"  multiple="multiple">
+										@foreach ($condition as $item)
+											<option value="{{ $item }}">{{ $item }}</option>
+										@endforeach
+									</select>
+								</div>
+							</div>
+                            <div class="row mt-3">
 								<div class="col-sm-5">
 									<div class="mb-3">
 										<label class="form-label" for="exampleFormControlInput1">Kategori</label>
@@ -112,6 +128,7 @@
 						</div>
 					</form>
 				</div>
+			
 				
 			</div>
 		</div>
@@ -119,6 +136,14 @@
 	
 	
 	@push('scripts')
+	<script src="{{ asset('assets/js/dropzone/dropzone.js') }}"></script>
+    <script src="{{ asset('assets/js/dropzone/dropzone-script.js') }}"></script>
+
+	<script src="{{ asset('assets/js/tooltip-init.js') }}"></script>
+    <!-- Plugins JS Ends-->
+    <!-- Theme js-->
+    <script src="{{ asset('assets/js/script.js') }}"></script>
+    <script src="{{ asset('assets/js/theme-customizer/customizer.js') }}"></script>
 	@endpush
 
 @endsection

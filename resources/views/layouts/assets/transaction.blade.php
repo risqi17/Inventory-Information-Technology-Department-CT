@@ -62,11 +62,44 @@
                                     </div>
 								</div>
 							</div>
+							<div class="row">
+								<div class="col-sm-9">
+									<div class="mb-3">
+										<label class="form-label" for="exampleFormControlInput1">Email Pengguna</label>
+                                        <input class="form-control" id="exampleFormControlInput1" type="email" name="email"/>
+                                    </div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-9">
+									<div class="mb-3">
+										<label class="form-label" for="exampleFormControlInput1">Nomor Handphone</label>
+                                        <input class="form-control" id="exampleFormControlInput1" type="text" name="phone"/>
+                                    </div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-sm-9">
+									<div class="mb-3">
+										<label class="form-label" for="exampleFormControlInput1">Keperluan</label>
+                                        <input class="form-control" id="exampleFormControlInput1" placeholder="ex. Dinas ke site" type="text" name="needed"/>
+                                    </div>
+								</div>
+							</div>
                             <div class="row">
 								<div class="col-sm-6">
 									<div class="mb-3">
 										<label class="form-label" for="exampleFormControlInput1">Check Out Date</label>
 										<input class="datepicker-here form-control digits" type="text" name="checkout_date" data-language="en" required/>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-6">
+									<div class="mb-3">
+										<label class="form-label" for="exampleFormControlInput1">Expected Finish Date</label>
+										<input class="datepicker-here form-control digits" type="text" name="end_date" data-language="en" />
 									</div>
 								</div>
 							</div>
