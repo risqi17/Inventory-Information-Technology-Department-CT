@@ -36,7 +36,7 @@ class AssetController extends Controller
 
        return  DataTables::of($result)
         ->addColumn('action', function ($result) {
-            $url = 'printExternal("/assets/print/'.$result->id.'")';
+            $url = 'printExternal("/assetku/public/assets/print/'.$result->id.'")';
 
             
             // $url_edit = "<a href='".route('inventory.main.edit',  $result->id)."' class='btn btn-primary btn-xs'>Hapus</a>&nbsp;";

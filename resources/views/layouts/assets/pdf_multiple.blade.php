@@ -49,16 +49,16 @@
 	<body>
 		@foreach ($asset as $item)
 		<table>
-			<tr height="130px">
-				<td width="130px">
+		<tr height="40px">
+				<td width="80px">
 					<div style="margin-left:10px">
-						{!! QrCode::size(110)->generate($item->uuid); !!}
+						{!! QrCode::size(60)->generate($item->uuid); !!}
 					</div>
 					
 				</td>
 				<td width="150px" style="text-align: left; vertical-align:top;">
 					<p style="margin-top:10px; margin-left: 10px">{{ $item->product_name }} <br>
-					{{ $item->asset_number }} <br> <br><br><br>
+					{{ $item->asset_number }} <br><br>
 					<img src="{{ asset('assets/images/logo/logo.png') }}" alt="" srcset="" width="50%">
 					</p>
 

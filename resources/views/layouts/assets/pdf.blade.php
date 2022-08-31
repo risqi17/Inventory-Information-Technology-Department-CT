@@ -48,16 +48,16 @@
 	</head>
 	<body>
 		<table>
-			<tr height="130px">
-				<td width="130px">
+			<tr height="40px">
+				<td width="80px">
 					<div style="margin-left:10px">
-						{!! QrCode::size(110)->generate($asset->uuid); !!}
+						{!! QrCode::size(60)->generate($asset->uuid); !!}
 					</div>
 					
 				</td>
 				<td width="150px" style="text-align: left; vertical-align:top;">
 					<p style="margin-top:10px; margin-left: 10px">{{ $asset->product_name }} <br>
-					{{ $asset->asset_number }} <br> <br><br><br>
+					{{ $asset->asset_number }} <br><br>
 					<img src="{{ asset('assets/images/logo/logo.png') }}" alt="" srcset="" width="50%">
 					</p>
 

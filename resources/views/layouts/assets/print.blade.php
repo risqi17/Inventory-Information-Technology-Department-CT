@@ -130,9 +130,14 @@
                     ( {{ $transaction->user }} )
 				</td>
                 <td style="width: 1000px">
-
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 </td>
-				<td class="border-0" style="width:50%">
+                
+				<td class="border-0" style="width:50%; padding: left 1000px;">
 					<br><strong>Yang Menyerahkan,</strong><br><br><br><br>
 					( {{ $transaction->employee }} )<br>
 				</td>
