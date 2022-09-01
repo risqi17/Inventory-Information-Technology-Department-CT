@@ -76,6 +76,9 @@ Route::group(['prefix' => 'assets', 'as' => 'assets.','middleware' => ['auth']],
     Route::get('delete/{id}', ['uses' => 'Assets\AssetController@delete', 'as' => 'main.delete'] );
     Route::get('export', ['uses' => 'Assets\AssetController@export', 'as' => 'main.export'] );
 
+    Route::get('transaction_edit/{id}', ['uses' => 'Assets\AssetController@transactionEdit', 'as' => 'main.transaction.edit'] );
+    Route::post('transaction_update', ['uses' => 'Assets\AssetController@transactionUpdate', 'as' => 'main.transaction.update'] );
+
 });
 
 Route::group(['middleware' => ['guest']], function() {

@@ -419,6 +419,40 @@ class AssetController extends Controller
 
     }
 
+    public function transactionEdit($id){
+        $asset  = DB::table('asset_transaction')
+        ->select('asset_transaction.*','assets_management.product_name','assets_management.asset_number','departments.name as department')
+        ->leftJoin('assets_management','assets_management.id','=','asset_transaction.asset_id')
+        ->leftJoin('departments','departments.id','=','asset_transaction.department_id')
+        ->where('asset_transaction.id', $id)
+        ->orderBy('transaction_date','desc')
+        ->first();
+
+        $department  = DB::table('departments')->get();
+
+
+        return view('layouts.assets.transaction_edit', compact('asset','department'));
+    }
+    public function transactionUpdate(Request $request){
+        $data = $request->all();
+        $data['user'] = strtoupper($request->get('user'));
+        $data['department_id'] = $request->get('department');
+        $data['transaction_date'] = $request->get('checkout_date');
+        $data['needed'] = $request->get('needed');
+        $data['end_date'] = $request->get('end_date');
+        $data['email'] = $request->get('email');
+        $data['phone'] = $request->get('phone');
+        $data['type'] = "CHECKOUT";
+        $data['updated_by'] = Auth::user()->id;
+
+        $transaction = AssetTransaction::findOrFail($request->get('id'));
+        $transaction->update($data);
+
+        return redirect()->route('assets.main.detail', $request->get('asset_id'))
+                            ->with('success','Transacion updated successfully');
+
+    }
+
     public function export()
 	{
 		$date = date('Y-m-d');
