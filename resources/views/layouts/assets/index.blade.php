@@ -177,7 +177,7 @@
                 {data: 'quantity', name: 'quantity'},
                 {data: 'category', name: 'categories.name'},
                 {data: 'purchase_date', name: 'purchase_date'},
-                {data: 'employee', name: 'employee'},
+                {data: 'employee', name: 'users.name'},
                 {data: 'created_at', name: 'created_at', orderable: false},
                 {data: 'status', name: 'status', searchable: false},
                 {data: 'action', name: 'action', orderable: false, searchable: false}
