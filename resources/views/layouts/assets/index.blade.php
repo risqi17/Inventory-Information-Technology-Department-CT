@@ -95,6 +95,7 @@
                     <th>Kategori</th>
                     <th>Tanggal Order</th>
                     <th>Created By</th>
+                    <th>Pemakai</th>
                     <th>Created At</th>
                     <th>Status</th>
                     <th></th>
@@ -115,6 +116,7 @@
                     <th>Kategori</th>
                     <th>Tanggal Order</th>
                     <th>Created By</th>
+                    <th>Pemakai</th>
                     <th>Created At</th>
                     <th>Status</th>
                     <th></th>
@@ -178,13 +180,14 @@
                 {data: 'category', name: 'categories.name'},
                 {data: 'purchase_date', name: 'purchase_date'},
                 {data: 'employee', name: 'users.name'},
+                {data: 'pengguna', name: 'at.user', searchable: true},
                 {data: 'created_at', name: 'created_at', orderable: false},
                 {data: 'status', name: 'status', searchable: false},
                 {data: 'action', name: 'action', orderable: false, searchable: false}
             ],
             'columnDefs': [{
                     'targets': 0,
-                    'searchable': false,
+                    'searchable': true,
                     'orderable': false,
                     'width': '1%',
                     'className': 'text-center',

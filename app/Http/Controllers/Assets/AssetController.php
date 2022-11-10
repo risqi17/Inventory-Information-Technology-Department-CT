@@ -28,11 +28,22 @@ class AssetController extends Controller
         return view('layouts.assets.index');
     }
     public function datatables(){
-        $result = DB::table('assets_management')
-        ->select('assets_management.*', 'users.name AS employee', 'categories.name AS category')
-        ->leftJoin('users', 'users.id','=','assets_management.created_by')
-        ->leftJoin('categories', 'categories.id','=','assets_management.category_id')
-        ->orderBy('created_at','desc');
+        // $result = DB::table('assets_management')
+        // ->select('assets_management.*', 'users.name AS employee', 'categories.name AS category')
+        // ->leftJoin('users', 'users.id','=','assets_management.created_by')
+        // ->leftJoin('categories', 'categories.id','=','assets_management.category_id')
+        // ->orderBy('created_at','desc');
+
+        $query = "SELECT at.user as pengguna, am.*, u.name as employee, c.name as category
+        FROM assets_management AS am LEFT JOIN (
+            SELECT *, ROW_NUMBER() OVER(PARTITION BY asset_id ORDER BY created_at DESC) AS RowNo
+            FROM asset_transaction
+        ) AS at ON am.id = at.asset_id AND at.RowNo=1
+        left join users u on am.created_by = u.created_by
+        left join categories c on am.category_id = c.id
+        order by am.created_at desc";
+
+        $result = DB::select(DB::raw($query));
 
        return  DataTables::of($result)
         ->addColumn('action', function ($result) {

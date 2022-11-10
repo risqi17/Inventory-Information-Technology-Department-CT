@@ -157,7 +157,7 @@
                                                         <td>{{ $item->employee }}</td>
                                                         <td>
                                                             @if ($item->type == "CHECKOUT")
-                                                                <a class="btn btn-sm btn-info"  href="#" title="Print Data" onclick="printExternal('/assetku/public/assets/print/ba/{{ $item->id }}')">Cetak BA</a>
+                                                                <a class="btn btn-sm btn-info"  href="{{ route('assets.main.print.ba', $item->id) }}" title="Print Data">Cetak BA</a>
                                                                 <a class="btn btn-sm btn-warning"  href="{{ route('assets.main.transaction.edit', $item->id) }}" >Edit</a>
                                                             @endif
                                                             
