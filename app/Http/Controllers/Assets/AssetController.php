@@ -82,6 +82,9 @@ class AssetController extends Controller
         ->editColumn('created_at', function ($result) {
             return $result->created_at ? with(new Carbon($result->created_at))->format('d/m/Y') : '';
         })
+        ->editColumn('pengguna', function ($result) {
+            return $result->status == 1 ? '' : $result->pengguna;
+        })
         ->editColumn('purchase_date', function ($result) {
             return $result->purchase_date ? with(new Carbon($result->purchase_date))->format('d/m/Y') : '';
         })
