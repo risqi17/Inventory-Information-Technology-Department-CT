@@ -177,10 +177,10 @@
                 {data: 'service_tag', name: 'service_tag'},
                 {data: 'warranty', name: 'warranty'},
                 {data: 'quantity', name: 'quantity'},
-                {data: 'category', name: 'categories.name'},
+                {data: 'category', name: 'category'},
                 {data: 'purchase_date', name: 'purchase_date'},
-                {data: 'employee', name: 'users.name'},
-                {data: 'pengguna', name: 'at.user', searchable: true},
+                {data: 'employee', name: 'employee'},
+                {data: 'pengguna', name: 'pengguna'},
                 {data: 'created_at', name: 'created_at', orderable: false},
                 {data: 'status', name: 'status', searchable: false},
                 {data: 'action', name: 'action', orderable: false, searchable: false}
