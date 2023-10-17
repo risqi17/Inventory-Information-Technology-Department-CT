@@ -61,7 +61,7 @@
         </tr>
        
        </table>
-       <br>
+       
        Dengan ini menyatakan akan :
        <table class="table table-bordered mt-2">
         <tr style="border-spacing: 0em">
@@ -121,12 +121,36 @@
             @endforeach
         </tbody>
         </table>
-        <br>
         <table class="table border-0 mt-5">
+            <tr>
+                <td> *Ketika Barang serahkan </td>
+            </tr>
 			<tr>
-				<td class="border-0" style="width:50%">
+				<td class="border-0" style="width:50%;padding-top:-5px !important;">
 					Jakarta,  {{ $transaction->tanggal }}<br>
-					<strong>Yang Menerima, </strong><br><br><br><br>
+					<strong>Yang Menyerahkan, </strong><br><br><br><br>
+                    ( {{ $transaction->employee }} )
+				</td>
+                <td style="width: 1000px">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </td>
+                
+				<td class="border-0" style="width:50%; padding: left 1000px;">
+					<br><strong>Yang Menerima,</strong><br><br><br><br>
+					( {{ $transaction->user }} )<br>
+				</td>
+			</tr>
+            <tr>
+                <td> *Ketika Barang dikembalikan </td>
+            </tr>
+            <tr>
+				<td class="border-0" style="width:50%">
+					Jakarta,<br>
+					<strong>Yang Mengembalikan, </strong><br><br><br><br>
                     ( {{ $transaction->user }} )
 				</td>
                 <td style="width: 1000px">
@@ -138,7 +162,7 @@
                 </td>
                 
 				<td class="border-0" style="width:50%; padding: left 1000px;">
-					<br><strong>Yang Menyerahkan,</strong><br><br><br><br>
+					<br><strong>Yang Menerima,</strong><br><br><br><br>
 					( {{ $transaction->employee }} )<br>
 				</td>
 			</tr>
