@@ -133,9 +133,9 @@ class AssetController extends Controller
             $condition = $request->get('condition');
             $condition = implode(',', $condition);
 
-            $data['condition'] = $condition;
+            $data['conditions'] = $condition;
         }
-        $data['purchase_date'] = $request->get('purchase_date');
+        $data['purchase_date'] = date('Y-m-d', strtotime($request->get('purchase_date')));
         $data['status'] = $request->get('status');
         $data['status_checkin'] = 1;
         $data['created_by'] = Auth::user()->id;
@@ -184,7 +184,7 @@ class AssetController extends Controller
     public function printBa($id)
     {
         $transaction        = DB::table('asset_transaction')
-        ->select('asset_transaction.*', 'assets_management.product_name','assets_management.asset_number','assets_management.specification','assets_management.uuid','assets_management.service_tag','assets_management.condition','users.name AS employee', 'departments.name AS department', DB::raw("date(transaction_date) as tanggal"), DB::raw("date(end_date) as tanggal_kembali"))
+        ->select('asset_transaction.*', 'assets_management.product_name','assets_management.asset_number','assets_management.specification','assets_management.uuid','assets_management.service_tag','assets_management.conditions','users.name AS employee', 'departments.name AS department', DB::raw("date(transaction_date) as tanggal"), DB::raw("date(end_date) as tanggal_kembali"))
         ->leftJoin('assets_management', 'assets_management.id','=','asset_transaction.asset_id')
         ->leftJoin('users', 'users.id','=','asset_transaction.created_by')
         ->leftJoin('departments', 'departments.id','=','asset_transaction.department_id')
@@ -192,7 +192,7 @@ class AssetController extends Controller
         ->orderBy('asset_transaction.transaction_date','desc')
         ->first();
 
-        $existedCondition = $transaction->condition;
+        $existedCondition = $transaction->conditions;
         $tempCondition = explode(',', $existedCondition);
         $oldCondition = [];
         foreach($tempCondition as $item){
@@ -215,8 +215,6 @@ class AssetController extends Controller
         $department     = DB::table('departments')->get()->pluck('name', 'id');
 
         $existedCondition = $inventory->condition;
-        dd($existedCondition);
-
        $tempCondition = array('Casing','Adaptor','Tas','LCD','Keyboard','Harddisk','Mouse','Lainnya');
        $condition = [];
        foreach($tempCondition as $val){ 
@@ -243,16 +241,16 @@ class AssetController extends Controller
         $data['category_id'] = $request->get('category');
         $data['warranty'] = $request->get('warranty');
         $data['quantity'] = $request->get('quantity');
-        $data['purchase_date'] = $request->get('purchase_date');
+        $data['purchase_date'] = date('Y-m-d', strtotime($request->get('purchase_date')));
         $data['status'] = $request->get('status');
 
         if($request->get('condition')){
             $condition = $request->get('condition');
             $condition = implode(',', $condition);
 
-            $data['condition'] = $condition;
+            $data['conditions'] = $condition;
         } else {
-            $data['condition'] = '';
+            $data['conditions'] = '';
         }
 
         if($request->file('file')){
@@ -375,9 +373,11 @@ class AssetController extends Controller
         $data['user'] = strtoupper($request->get('user'));
         $data['asset_id'] = $request->get('id');
         $data['department_id'] = $request->get('department');
-        $data['transaction_date'] = $request->get('checkout_date');
+        $data['transaction_date'] =  date('Y-m-d', strtotime($request->get('checkout_date')));
         $data['needed'] = $request->get('needed');
-        $data['end_date'] = $request->get('end_date');
+        if ($request->get('end_date') != null) {
+            $data['end_date'] = date('Y-m-d', strtotime($request->get('end_date')));
+        }
         $data['email'] = $request->get('email');
         $data['phone'] = $request->get('phone');
         $data['type'] = "CHECKOUT";
@@ -416,7 +416,7 @@ class AssetController extends Controller
         $data['user'] = strtoupper($request->get('user'));
         $data['asset_id'] = $request->get('id');
         $data['department_id'] = $request->get('department');
-        $data['transaction_date'] = $request->get('checkout_date');
+        $data['transaction_date'] = date('Y-m-d', strtotime($request->get('checkout_date')));
         $data['type'] = "CHECKIN";
         $data['created_by'] = Auth::user()->id;
 
@@ -451,9 +451,12 @@ class AssetController extends Controller
         $data = $request->all();
         $data['user'] = strtoupper($request->get('user'));
         $data['department_id'] = $request->get('department');
-        $data['transaction_date'] = $request->get('checkout_date');
+        $data['transaction_date'] = date('Y-m-d', strtotime($request->get('checkout_date')));
         $data['needed'] = $request->get('needed');
-        $data['end_date'] = $request->get('end_date');
+        if ($request->get('end_date') != null) {
+            $data['end_date'] = date('Y-m-d', strtotime($request->get('end_date')));
+        }
+        
         $data['email'] = $request->get('email');
         $data['phone'] = $request->get('phone');
         $data['type'] = "CHECKOUT";

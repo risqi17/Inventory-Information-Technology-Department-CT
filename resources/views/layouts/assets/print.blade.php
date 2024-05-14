@@ -16,7 +16,7 @@
     <!-- Styles -->
 	<style>
 		.table td{
-			padding: .5rem !important;
+			padding: .3rem !important;
 		}
 		body {font-size: 16px !important;}
        
@@ -63,8 +63,8 @@
        </table>
        
        Dengan ini menyatakan akan :
-       <table class="table table-bordered mt-2">
-        <tr style="border-spacing: 0em">
+       <table class="table table-bordered">
+        <tr style="border-spacing: 0em; margin-top: -1000px;">
             <td></td>
             <td style="text-align: left; vertical-align: top;">1. </td>
             <td>
@@ -88,10 +88,9 @@
             </td>
         </tr>
        </table>
-       <br>
        Check List Peminjaman :
        <table class="table table-bordered mt-2">
-        <tr>
+        <tr style="margin-top: -10px;">
             <td>Barang</td>
             <td style="text-align: left; vertical-align: top;">: </td>
             <td>[ {{ $transaction->product_name }} - {{ $transaction->asset_number }} ] {{ $transaction->specification }}</td>
